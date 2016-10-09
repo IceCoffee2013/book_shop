@@ -577,6 +577,8 @@ public class UserController {
         }
         
 		List<OrdersVO> lists = userService.ordersList(pagingVO.getFirstRow()-1,pagingVO.getEndRow(),email);
+
+		System.err.println("order list:" + lists.size() + " | user: " + email);
 		if(lists.isEmpty()){
 			modelandview.addObject("lists", null);
             return modelandview;

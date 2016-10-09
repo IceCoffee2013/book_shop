@@ -1,11 +1,3 @@
-<%--
- * First Editor : Donghyun Seo (egaoneko@naver.com)
- * Last Editor  : jisung jeon
- * Date         : 4/16/15 | 11:54 AM
- * Description  : 
- * Copyright ⓒ 2013-2015 Donghyun Seo All rights reserved.
- * version      : 
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>

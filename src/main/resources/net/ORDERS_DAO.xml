@@ -22,7 +22,7 @@
 	<select id="selectList" parameterType="map" resultMap="ordersResultMap">
      select orders.no, orders.order_date, orders.status, orders.user_email, orders.user_name,
      orders.address, orders.postcode, orders.receiver, orders.total_price, orders.good_no, orders.amount, orders.price from shop_orders as orders
-        <if test="keyword != NULL">
+        <if test="userEmail != NULL">
             where orders.user_email like #{userEmail}
         </if>
      order by orders.no desc

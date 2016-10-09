@@ -120,7 +120,7 @@ public interface UserService {
     Editor : Jisung Jeon
     Decription : list of orderlist
     */
-	public List<OrdersVO> ordersList(int start, int end,String email) throws Exception;
+	public List<OrdersVO> ordersList(int start, int end, String email) throws Exception;
 	
 	/*
     Editor : Jisung Jeon

@@ -18,7 +18,7 @@
                 Products
 
                 <sec:authorize access="hasRole('ROLE_ADMIN')">
-                    <a class="btn btn-success pull-right" href="<c:url value="/goods/buy.do" />">Add</a>
+                    <a class="btn btn-success pull-right" href="<c:url value="/goods/add.do" />">Add</a>
                 </sec:authorize>
             </div>
             <div class="table-responsive b0">
