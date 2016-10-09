@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="net.WishlistDao">
+    <resultMap type="WishlistVO" id="wishlistResultMap">
+    	<result column="board_no" property="boardNumber"/>
+    	<result column="user_email" property="userEmail"/>
+    	<result column="no" property="number"/>
+    	<result column="total_price" property="price"/>
+    	<result column="title" property="title"/>
+    	<result column="image_path" property="imagePath"/>
+    </resultMap>
+    
+    <insert id="insert" parameterType="map">
+      insert into shop_wishlist (board_no, user_email)
+      values(#{boardNumber},#{userEmail})
+    </insert>
+    
+    <select id="count" resultType="int">
+      select count(*) from shop_wishlist
+    </select>
+    
+    <select id="countByKeyword" parameterType="String" resultType="int">
+      select count(*) from shop_wishlist where name like CONCAT('%', #{keyword}, '%')
+    </select>
+    
+    <select id="selectList" parameterType="map" resultMap="wishlistResultMap">
+      select wish.board_no, wish.no, total_price, title, wish.user_email, image_path from shop_wishlist as wish 
+      inner join shop_board as board on wish.board_no=board.no
+      <choose>
+      	<when test="keyword != NULL">
+      	where title like CONCAT('%', #{keyword}, '%') and wish.user_email like CONCAT('%', #{keyword}, '%')
+      	</when>
+      	<otherwise>
+      	where wish.user_email like #{userEmail}
+      	</otherwise>
+      </choose>
+      order by wish.no desc
+ 	  limit #{offset},#{limit}
+    </select>
+    
+    <delete id="delete" parameterType="map">
+      delete from shop_wishlist where user_email=#{userEmail} and board_no=#{boardNumber}
+    </delete>
+    
+    <select id="selectOne" parameterType="map" resultMap="wishlistResultMap">
+      select * from shop_wishlist where user_email=#{userEmail} and board_no=#{boardNumber}
+    </select>
+</mapper>

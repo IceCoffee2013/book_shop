@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.GoodsDao">
+    <resultMap type="GoodsVO" id="goodsResultMap">
+        <id column="no" property="number"/>
+        <result column="title" property="title"/>
+        <result column="author" property="author"/>
+        <result column="year" property="year"/>
+        <result column="journal" property="journal"/>
+        <result column="description" property="description"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="user_no" property="userNumber"/>
+        <result column="user_email" property="userEmail"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="image_path" property="imagePath"/>
+        <result column="venue" property="venue"/>
+    </resultMap>
+
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*) FROM shop_goods
+    </select>
+
+    <select id="selectCountByKeyword" parameterType="hashmap" resultType="int">
+        SELECT COUNT(*) FROM shop_goods
+
+        <if test="keyword != NULL">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%') OR author LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%') OR no LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <select id="selectOne" parameterType="int" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods WHERE no = #{VALUE}
+    </select>
+
+    <select id="selectOneByTitle" parameterType="string" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods WHERE title LIKE CONCAT('%', #{VALUE}, '%')
+    </select>
+
+    <select id="selectOneByVenue" parameterType="string" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods WHERE venue = #{VALUE}
+    </select>
+
+    <select id="selectList" parameterType="hashmap" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods ORDER BY no DESC LIMIT #{rowBounds.offset},#{rowBounds.limit}
+    </select>
+
+    <select id="selectListByKeywordAll" parameterType="hashmap" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods
+
+        <if test="keyword != NULL">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%') OR author LIKE CONCAT('%', #{keyword}, '%') OR year LIKE CONCAT('%', #{keyword}, '%') OR no LIKE CONCAT('%', #{keyword}, '%') OR journal LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+
+        ORDER BY no
+    </select>
+
+    <select id="selectListByGraph" parameterType="hashmap" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods
+
+        WHERE author = #{author}
+
+        ORDER BY no
+    </select>
+
+    <select id="selectListByKeyword" parameterType="hashmap" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods
+
+        <if test="keyword != NULL">
+            WHERE title LIKE CONCAT('%', #{keyword}, '%') OR author LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%') OR no LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+
+        ORDER BY no DESC LIMIT #{rowBounds.offset},#{rowBounds.limit}
+    </select>
+
+    <select id="selectListByAuthor" parameterType="string" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods
+        WHERE author LIKE CONCAT('%', #{VALUE}, '%')
+    </select>
+
+    <insert id="insert" parameterType="GoodsVO">
+        INSERT INTO shop_goods (title, author, year, journal, description, price, stock, user_no, user_email, created_date, image_path, venue)
+        VALUE (#{title},#{author},#{year},#{journal},#{description},#{price},#{stock},#{userNumber},#{userEmail},now(),#{imagePath},#{venue})
+    </insert>
+
+    <update id="update" parameterType="GoodsVO">
+        UPDATE shop_goods
+
+        <set>
+            <if test="title != null">title=#{title},</if>
+            <if test="author != null">author=#{author},</if>
+            <if test="year != null">year=#{year},</if>
+            <if test="journal != null">journal=#{journal},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="price != null">price=#{price},</if>
+            <if test="stock != null">stock=#{stock},</if>
+            <if test="imagePath != null">image_path=#{imagePath}</if>
+            <if test="venue != null">venue=#{venue}</if>
+        </set>
+        WHERE no = #{number}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM shop_goods WHERE no = #{VALUE}
+    </delete>
+
+    <!--<update id="decreaseGoodsCount" parameterType="int">-->
+        <!--UPDATE shop_goods SET stock = stock - 1 WHERE no = #{VALUE}-->
+    <!--</update>-->
+
+    <select id="selectCountForStock" parameterType="hashmap" resultType="int">
+        SELECT COUNT(*) FROM shop_goods WHERE stock <![CDATA[ <= ]]> #{maxStock} and stock <![CDATA[ >= ]]> #{minStock}
+
+        <if test="keyword != NULL">
+            AND title LIKE CONCAT('%', #{keyword}, '%') OR author LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+
+    <select id="selectListForStock" parameterType="hashmap" resultMap="goodsResultMap">
+        SELECT * FROM shop_goods WHERE stock <![CDATA[ <= ]]> #{maxStock} and stock <![CDATA[ >= ]]> #{minStock}
+
+        <if test="keyword != NULL">
+            AND title LIKE CONCAT('%', #{keyword}, '%') OR author LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+
+        ORDER BY no DESC LIMIT #{rowBounds.offset},#{rowBounds.limit}
+    </select>
+
+    <update id="increaseStockCount" parameterType="hashmap">
+        UPDATE shop_goods SET stock = stock + 1 WHERE no = #{VALUE}
+    </update>
+
+    <update id="decreaseStockCount" parameterType="hashmap">
+        UPDATE shop_goods SET stock = stock - #{quantity} WHERE no = #{goodsNumber}
+    </update>
+
+</mapper>

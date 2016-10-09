@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.UserDao">
+    <resultMap type="UserVO" id="userResultMap">
+        <id column="no" property="number"/>
+        <result column="first_name" property="firstName"/>
+        <result column="last_name" property="lastName"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="address" property="address"/>
+        <result column="postcode" property="postcode"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="last_date" property="lastDate"/>
+        <result column="authority" property="authority"/>
+        <result column="image_path" property="imagePath"/>
+        <result column="card_no" property="cardNumber"/>
+    </resultMap>
+    
+	<!-- Don't use parameterMap -->
+    <select id="selectOne" parameterType="String" resultMap="userResultMap">
+      select * from shop_user where email=#{email}
+    </select>
+
+    <select id="selectList" parameterType="map" resultMap="userResultMap">
+      select * from shop_user 
+      <if test="keyword != NULL">
+      where last_name like CONCAT('%', #{keyword}, '%') or email like CONCAT('%', #{keyword}, '%') or authority like CONCAT('%', #{keyword}, '%')
+      </if>
+      order by 
+      <choose>
+      	<when test="order == 'creDate_asc'">created_date asc</when>
+      	<when test="order == 'creDate_desc'">created_date desc</when>
+      	<when test="order == 'lastDate_asc'">last_date asc</when>
+      	<when test="order == 'lastDate_desc'">last_date desc</when>
+      	<when test="order == 'no_asc'">no asc</when>
+      	<otherwise>no desc</otherwise>
+ 	  </choose>
+ 	  limit #{offset},#{limit} 
+    </select>
+
+    <select id="count" resultType="int">
+      select count(*) from shop_user
+    </select>
+
+	<select id="countByKeyword" parameterType="String" resultType="int">
+      select count(*) from shop_user where last_name like CONCAT('%', #{keyword}, '%') or email like CONCAT('%', #{keyword}, '%') or authority like CONCAT('%', #{keyword}, '%')
+    </select>
+    
+    <insert id="insert" parameterType="UserVO">
+      insert into shop_user (first_name,last_name,email,password,address,postcode,created_date,last_date,image_path,card_no)
+      values(#{firstName},#{lastName},#{email},#{password},#{address},#{postcode},now(),now(),#{imagePath},#{cardNumber})
+    </insert>
+
+    <update id="update" parameterType="UserVO">
+      update shop_user set first_name=#{firstName},last_name=#{lastName},address=#{address},postcode=#{postcode},image_path=#{imagePath}, card_no=#{cardNumber}
+      where email=#{email}
+    </update>
+
+    <delete id="delete" parameterType="String">
+      delete from shop_user where email=#{email}
+    </delete>
+
+	<update id="updateDate" parameterType="String">
+      update shop_user set last_date=now() where email=#{email}
+    </update>
+
+	<update id="updateData" parameterType="map">
+	  update shop_user 
+	  <set>
+	  	<if test="authority != null">authority=#{authority},</if>
+	  	<if test="password != null">password=#{password}</if>
+	  </set>
+	  where email=#{email}
+	</update>
+</mapper>

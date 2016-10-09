@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.OrdersDao">
+    <resultMap type="OrdersVO" id="ordersResultMap">
+    	<id column="no" property="number"/>
+    	<result column="order_date" property="orderDate"/>
+    	<result column="status" property="status"/>
+    	<result column="user_email" property="userEmail"/>
+    	<result column="user_name" property="userName"/>
+    	<result column="address" property="address"/>
+    	<result column="postcode" property="postcode"/>
+    	<result column="receiver" property="receiver"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="good_no" property="goodNumber"/>
+        <result column="price" property="price"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
+	<select id="selectList" parameterType="map" resultMap="ordersResultMap">
+     select orders.no, orders.order_date, orders.status, orders.user_email, orders.user_name,
+     orders.address, orders.postcode, orders.receiver, orders.total_price, orders.good_no, orders.amount, orders.price from shop_orders as orders
+        <if test="keyword != NULL">
+            where orders.user_email like #{userEmail}
+        </if>
+     order by orders.no desc
+ 	 limit #{offset},#{limit} 
+    </select>
+
+    <select id="selectTotalList" parameterType="map" resultMap="ordersResultMap">
+        select orders.no, orders.order_date, orders.status, orders.user_email, orders.user_name,
+        orders.address, orders.postcode, orders.receiver, orders.total_price, orders.number_no, orders.amount, orders.price from shop_orders as orders
+        <if test="keyword != NULL">
+            where orders.user_email LIKE CONCAT('%', #{keyword}, '%') OR orders.user_name LIKE CONCAT('%', #{keyword}, '%') or orders.no like CONCAT('%', #{keyword}, '%')
+        </if>
+        order by orders.no desc
+        limit #{offset},#{limit}
+    </select>
+    
+    <delete id="delete" parameterType="int">
+      delete from shop_orders where no=#{number}
+    </delete>
+    
+    <select id="count" resultType="int">
+      select count(*) from shop_orders
+    </select>
+    
+    <select id="countByKeyword" parameterType="String" resultType="int">
+      select count(*) from shop_orders
+      where user_email like CONCAT('%', #{keyword}, '%') or user_name like CONCAT('%', #{keyword}, '%')!Ap
+    </select>
+
+    <select id="countTotalList" parameterType="map" resultType="int">
+        select count(*) from shop_orders
+        <if test="keyword != NULL">
+            WHERE user_email LIKE CONCAT('%', #{keyword}, '%') OR user_name LIKE CONCAT('%', #{keyword}, '%') OR no LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </select>
+    
+    <insert id="insert" parameterType="OrdersVO">
+        INSERT INTO shop_orders (order_date, status, user_email, user_name, address, postcode, receiver, total_price, good_no, amount, price)
+        VALUE (now(),#{status},#{userEmail},#{userName},#{address},#{postcode},#{receiver},#{totalPrice},#{goodNumber},#{amount},#{price})
+    </insert>
+
+</mapper>

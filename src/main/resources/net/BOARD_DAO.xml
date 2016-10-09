@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.BoardDao">
+    <resultMap type="BoardVO" id="boardResultMap">
+        <id column="no" property="number"/>
+        <result column="group_no" property="groupNumber"/>
+        <result column="sequence_no" property="sequenceNumber"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="posting_date" property="postingDate"/>
+        <result column="read_count" property="readCount"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="file_count" property="fileCount"/>
+        <result column="goods_count" property="goodsCount"/>
+        <result column="user_no" property="userNumber"/>
+        <result column="user_email" property="userEmail"/>
+        <result column="separator_name" property="separatorName"/>
+        <result column="file_no" property="fileNumber"/>
+        <result column="total_price" property="totalPrice"/>
+        <result column="image_path" property="imagePath"/>
+    </resultMap>
+
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*) FROM shop_board
+    </select>
+
+    <select id="selectCountBySeparator" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM shop_board WHERE separator_name = #{separatorName}
+    </select>
+
+    <select id="selectCountByHashMap" parameterType="hashmap" resultType="int">
+        SELECT COUNT(*) FROM shop_board
+
+        <if test="separatorName != NULL or keyword != NULL">
+            WHERE
+
+            <if test="separatorName != NULL">
+                separator_name = #{separatorName}
+            </if>
+
+            <if test="separatorName != NULL and keyword != NULL">
+                AND
+            </if>
+
+            <if test="keyword != NULL">
+                title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%') OR user_email LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </if>
+
+    </select>
+
+    <select id="selectList" resultMap="boardResultMap">
+        SELECT * FROM shop_board ORDER BY sequence_no DESC LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="selectListBySeparator" parameterType="hashmap" resultMap="boardResultMap">
+        SELECT * FROM shop_board WHERE separator_name = #{separatorName} ORDER BY sequence_no DESC LIMIT #{rowBounds.offset},#{rowBounds.limit}
+    </select>
+
+    <select id="selectListByHashMap" parameterType="hashmap" resultMap="boardResultMap">
+        SELECT * FROM shop_board
+
+        <if test="separatorName != NULL or keyword != NULL">
+            WHERE
+
+            <if test="separatorName != NULL">
+                separator_name = #{separatorName}
+            </if>
+
+            <if test="separatorName != NULL and keyword != NULL">
+                AND
+            </if>
+
+            <if test="keyword != NULL">
+                title LIKE CONCAT('%', #{keyword}, '%') OR content LIKE CONCAT('%', #{keyword}, '%') OR user_email LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </if>
+
+        ORDER BY sequence_no DESC LIMIT #{rowBounds.offset},#{rowBounds.limit}
+    </select>
+
+    <insert id="insert" parameterType="BoardVO">
+        INSERT INTO shop_board (group_no, sequence_no, title, content, posting_date, read_count, comment_count, file_count, goods_count, user_no, user_email, separator_name, total_price, image_path)
+        VALUE (#{groupNumber},#{sequenceNumber},#{title},#{content},now(),0,0,0,0,#{userNumber},#{userEmail},#{separatorName},#{totalPrice},#{imagePath})
+    </insert>
+
+    <select id="selectOne" parameterType="int" resultMap="boardResultMap">
+        SELECT * FROM shop_board WHERE no = #{VALUE}
+    </select>
+
+    <update id="increaseReadCount" parameterType="int">
+        UPDATE shop_board SET read_count = read_count + 1 WHERE no = #{VALUE}
+    </update>
+
+    <select id="selectLastSequenceNumber" parameterType="hashmap" resultType="String">
+        SELECT min(sequence_no) FROM shop_board WHERE sequence_no <![CDATA[ < ]]> #{searchMaxSeqNum} and sequence_no <![CDATA[ >= ]]> #{searchMinSeqNum}
+    </select>
+
+    <update id="update" parameterType="BoardVO">
+        UPDATE shop_board
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="totalPrice != null">total_price = #{totalPrice}</if>
+            <if test="imagePath != null">image_path = #{imagePath}</if>
+        </set>
+        WHERE no = #{number}
+    </update>
+
+    <update id="setGoodsCountZero" parameterType="int">
+        UPDATE shop_board SET goods_count = 0 WHERE no = #{VALUE}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM shop_board WHERE no = #{VALUE}
+    </delete>
+
+    <select id="selectGroupNumber" parameterType="String" resultType="int">
+        SELECT next_value FROM shop_no_sequence WHERE sequence_name = #{NAME} FOR UPDATE
+    </select>
+
+    <update id="updateGroupNumber" parameterType="String">
+        UPDATE shop_no_sequence SET next_value = next_value + 1 WHERE sequence_name = #{NAME}
+    </update>
+
+    <select id="selectLastBoardNumberByEmail" parameterType="String" resultType="int">
+        SELECT no FROM shop_board WHERE user_email = #{userEmail} ORDER BY no DESC LIMIT 0,1
+    </select>
+</mapper>

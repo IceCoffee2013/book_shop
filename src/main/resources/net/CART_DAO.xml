@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="net.CartDao">
+    <resultMap type="CartVO" id="cartResultMap">
+    	<!--<result column="board_no" property="boardNumber"/>-->
+        <result column="no" property="number"/>
+        <result column="good_no" property="goodNumber"/>
+        <result column="title" property="goodName"/>
+    	<result column="user_email" property="userEmail"/>
+    	<result column="quantity" property="quantity"/>
+    	<result column="price" property="price"/>
+    	<result column="image_path" property="imagePath"/>
+    </resultMap>
+    
+    <insert id="insert" parameterType="CartVO">
+        INSERT INTO shop_cart (good_no, quantity, user_email)
+        VALUE (#{goodNumber},#{quantity},#{userEmail})
+    </insert>
+    
+    <select id="selectList" parameterType="String" resultMap="cartResultMap">
+      select cart.no, cart.good_no, good.title, cart.user_email, cart.quantity, good.price, image_path from shop_cart as cart
+      inner join shop_goods as good on cart.good_no=good.no
+      where cart.user_email like #{userEmail}
+      order by cart.no desc
+    </select>
+    
+    <delete id="delete" parameterType="int">
+      delete from shop_cart where no=#{number}
+    </delete>
+    
+    <delete id="deleteMap" parameterType="map">
+      delete from shop_cart where user_email=#{userEmail} and good_no=#{goodNumber}
+    </delete>
+    
+    <select id="selectOne" parameterType="map" resultMap="cartResultMap">
+      select cart.no, cart.good_no, good.title, cart.user_email, cart.quantity, good.price, image_path from shop_cart as cart
+      inner join shop_goods as good on cart.good_no=good.no
+      where cart.user_email=#{userEmail} and cart.good_no=#{goodNumber}
+    </select>
+    
+    <update id="changeMap" parameterType="map">
+   		update shop_cart set quantity=#{quantity} where no=#{number}
+    </update>
+</mapper>
