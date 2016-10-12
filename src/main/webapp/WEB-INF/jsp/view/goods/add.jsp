@@ -38,7 +38,7 @@
                 <div class="row pv-lg">
                     <div class="col-lg-2"></div>
                     <div class="col-lg-8">
-                        <form class="form-horizontal" action="<c:url value="/goods/buy.do" />" enctype="multipart/form-data" method="post">
+                        <form class="form-horizontal" action="<c:url value="/goods/add.do" />" enctype="multipart/form-data" method="post">
                             <div class="form-group">
                                 <label for="inputContact1" class="col-sm-2 control-label">Title</label>
                                 <div class="col-sm-10">
