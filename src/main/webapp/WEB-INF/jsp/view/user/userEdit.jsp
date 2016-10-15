@@ -130,7 +130,7 @@
 						<input type="text" class="span3" id="postcode" name="postcode" maxlength="6" required="required" autocomplete="off" value="${uservo.postcode}">&nbsp;<span id="errmsg"></span><br>
 					</div>
 					<div class="form-group">
-						<label for="card">Post code</label>
+						<label for="card">Card</label>
 						<input type="text" class="span3" id="card" name="card" maxlength="16" required="required" autocomplete="off" value="${uservo.cardNumber}">&nbsp;<span id="errmsg3"></span><br>
 					</div>
 					<input type="file" name="thumnail"/>
