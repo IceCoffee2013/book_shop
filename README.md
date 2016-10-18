@@ -7,6 +7,6 @@
 * Front-end
 	* Javascript & jQuery
 	* Bootstrap
-        * datatable.js
+    * datatable.js
 * VCS
 	* Git
