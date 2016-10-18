@@ -3,6 +3,7 @@ package net.shop.vo;
 import java.io.Serializable;
 
 /**
+ * @author Langley
  * cart item.
  */
 public class CartVO implements Serializable{

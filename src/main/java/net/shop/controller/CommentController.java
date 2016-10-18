@@ -24,13 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Description
- * Donghyun Seo (egaoneko@naver.com)
- * 2015-03-25
- * Copyright ⓒ 2013-2015 Donghyun Seo All rights reserved.
- * version
- */
 
 @Controller
 @RequestMapping(value = "/comment")
@@ -45,9 +38,6 @@ public class CommentController {
     @Resource(name = "util")
     private Util util;
 
-    /*
-    댓글 리스트
-     */
     @RequestMapping(value = "/list.do")
     public ModelAndView commentList(@RequestParam(value = "cp", required = false) Integer requestPage,
                                     @RequestParam(value = "cs", required = false) String separator,
@@ -59,7 +49,7 @@ public class CommentController {
         if(requestPage == null) requestPage = 1;
         if(requestPage <= 0) throw new IllegalArgumentException("requestPage <= 0 : " + requestPage);
 
-        if(boardNumber == null) throw new BoardNotFoundException("게시글이 존재하지 않음 : " + boardNumber);
+        if(boardNumber == null) throw new BoardNotFoundException("BoardNotFound : " + boardNumber);
         if(boardNumber < 0) throw new IllegalArgumentException("board number < 1 : " + boardNumber);
 
         modelAndView.addObject("cs", separator);
@@ -82,7 +72,6 @@ public class CommentController {
             totalCount = commentService.selectCount(boardNumber, separator);
         }
 
-        /*Paging 메소드의 사용 */
         PagingVO pagingVO = util.paging(requestPage, 3, totalCount);
         modelAndView.addObject("pagingVO", pagingVO);
         modelAndView.setViewName("/comment/list");
@@ -107,9 +96,6 @@ public class CommentController {
         return modelAndView;
     }
 
-    /*
-    댓글 글쓰기
-     */
     @RequestMapping(value = "/write.do", method = RequestMethod.POST)
     public String commentWrite(@RequestParam(value = "content", required = true) String content,
                                @RequestParam(value = "boardNumber", required = true ) Integer boardNumber,
@@ -136,9 +122,6 @@ public class CommentController {
         return "/common/success";
     }
 
-    /*
-    댓글 수정 폼
-     */
     @RequestMapping(value = "/update.do")
     public ModelAndView commentUpdateForm(@RequestParam(value = "commentNumber", required = true) Integer commentNumber,
                                           @RequestParam(value = "cs", required = true) String separator,
@@ -160,9 +143,6 @@ public class CommentController {
         return modelAndView;
     }
 
-    /*
-    댓글 수정
-     */
     @RequestMapping(value = "/update.do", method = RequestMethod.POST)
     public String commentUpdate(@RequestParam(value = "commentNumber", required = true) Integer commentNumber,
                               @RequestParam(value = "content", required = true) String content,
@@ -185,9 +165,6 @@ public class CommentController {
         return "/common/success";
     }
 
-    /*
-    댓글 답글 폼
-     */
     @RequestMapping(value = "/reply.do")
     public ModelAndView commentReply(@RequestParam(value = "parentCommentNumber", required = true) Integer parentCommentNumber,
                                @RequestParam(value = "boardNumber", required = true) Integer boardNumber,
@@ -214,9 +191,6 @@ public class CommentController {
         return modelAndView;
     }
 
-    /*
-    댓글 답글
-     */
     @RequestMapping(value = "/reply.do", method = RequestMethod.POST)
     public String commentReply(@RequestParam(value = "content", required = true) String content,
                              @RequestParam(value = "boardNumber", required = true) Integer boardNumber,
@@ -254,9 +228,6 @@ public class CommentController {
         return "/common/success";
     }
 
-    /*
-    댓글 삭제
-     */
     @RequestMapping(value = "/delete.do", method = RequestMethod.POST)
     public String commentDelete(@RequestParam(value = "boardNumber", required = true) Integer boardNumber,
                                 @RequestParam(value = "commentNumber", required = true) Integer commentNumber,

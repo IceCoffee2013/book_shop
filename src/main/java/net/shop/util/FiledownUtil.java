@@ -12,14 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.servlet.view.AbstractView;
 
-/**
- * First Editor : Jisung Jeon (cbajs20@gmail.com)
- * Last Editor  :
- * Date         : 2015-04-09
- * Description  :
- * Copyright ⓒ 2013-2015 Jisung Jeon All rights reserved.
- * version      :
- */
 
 @Component(value="fileDownloadView")
 public class FiledownUtil extends AbstractView{
@@ -36,10 +28,10 @@ public class FiledownUtil extends AbstractView{
 		String rename = (String) req.getAttribute("fileName");
 		String fileName = rename == null ? file.getName() : rename;
 		 
-		if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1) {   // MS IE 브라우저에서 한글 인코딩
+		if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1) {
 			res.setHeader("Content-Disposition", "attachment; filename="
 		     + java.net.URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "\\ ") + ";");
-		} else {                                                                                              // 모질라나 오페라 브라우저에서 한글 인코딩​
+		} else {
 			res.setHeader("Content-Disposition",
 		     "attachment; filename=" + new String(fileName.getBytes("UTF-8"), "ISO-8859-1").replaceAll("\\+", "\\ ") + ";");
 		}

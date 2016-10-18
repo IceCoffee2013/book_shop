@@ -91,7 +91,7 @@ public class Util {
 
     public void isEqualMemberId(String email, String memberId) throws MemberIdNotEqualsException{
         if (!email.equals(memberId)) {
-            throw new MemberIdNotEqualsException("작성자의 ID와 로그인한 사용자의 ID가 다릅니다.");
+            throw new MemberIdNotEqualsException("MemberIdNotEquals.");
         }
     }
 
@@ -111,12 +111,12 @@ public class Util {
 
     public void checkParent(ReplyVO parent, int parentNumber) throws NotFoundException, CannotReplyException {
         if(parent == null){
-            throw new NotFoundException("부모글이 존재하지 않음 : " + parentNumber);
+            throw new NotFoundException("NotFound : " + parentNumber);
         }
 
         int parentLevel = parent.getLevel();
         if(parentLevel == 1){
-            throw new CannotReplyException("마지막 레벨 글에는 답글을 달 수 없습니다 : " + parent.getNumber());
+            throw new CannotReplyException("CannotReply : " + parent.getNumber());
         }
     }
 
@@ -155,7 +155,7 @@ public class Util {
                 sequenceNumber = lastChildSeq;
             }
             if(orderOfLastChildSeq.equals("00")){
-                throw new LastChildAleadyExistsException("마지막 자식글이 이미 존재합니다 : " + lastChildSeq);
+                throw new LastChildAleadyExistsException("LastChildAleadyExists : " + lastChildSeq);
             }
             long seq = Long.parseLong(sequenceNumber) - decUnit;
             sequenceNumber = decimalFormat.format(seq);

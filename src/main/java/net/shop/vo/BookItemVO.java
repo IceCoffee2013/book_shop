@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * @author Langley
  * Used for data tables item
  * Created by Langley on 9/18/16.
  */

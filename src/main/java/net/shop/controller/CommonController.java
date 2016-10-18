@@ -26,15 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * First Editor : Jisung Jeon (cbajs20@gmail.com)
- * Last Editor  :
- * Date         : 2015-04-09
- * Description  :
- * Copyright ⓒ 2013-2015 Jisung Jeon All rights reserved.
- * version      :
- */
-
 @Controller
 public class CommonController {
 	
@@ -112,14 +103,6 @@ public class CommonController {
 		return "/common/upload";
 	}
 
-	/**
-	 * First Editor : Donghyun Seo (egaoneko@naver.com)
-	 * Last Editor  :
-	 * Date         : 2015-05-04
-	 * Description  :
-	 * Copyright ⓒ 2013-2015 Donghyun Seo All rights reserved.
-	 * version      :
-	 */
 	@RequestMapping(value = "/isLogin.do")
 	public String isLogin(Authentication auth) throws Exception {
 
@@ -159,9 +142,6 @@ public class CommonController {
 		
 		response.setContentType("text/plain; charset=UTF-8");
 	    
-	    //json string 값으로 callback
-	    //json 값으로 넘기는 필요 값
-	    //imageurl, filename,filesize,imagealign
 	    pw.print("{\"imageurl\" : \"/lab_shop/resource/upload/"+realname+"\",\"filename\":\""+realname+"\",\"filesize\": 600,\"imagealign\":\"C\"}");
 	    pw.flush();
 	    pw.close();

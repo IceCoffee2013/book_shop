@@ -88,11 +88,6 @@ public class AdminController {
 		return modelandview;
 	}
 
-	/*
-	First Editor : Donghyun Seo (egaoneko@naver.com)
-	Last Editor  :
-	Date         : 2015-06-06
-	*/
 	@RequestMapping("/orderList.do")
 	public ModelAndView orderList(@RequestParam(value="p",required=false) String p,
 								  @RequestParam(value="q",required=false) String keyword) throws Exception{
@@ -146,11 +141,6 @@ public class AdminController {
 		return modelandview;
 	}
 
-	/*
-	First Editor : Donghyun Seo (egaoneko@naver.com)
-	Last Editor  :
-	Date         : 2015-06-06
-	*/
 	@RequestMapping(value = "/goodsList.do")
 	public ModelAndView goodsList(@RequestParam(value = "p", required = false) String requestPageString,
 								  @RequestParam(value="q",required=false) String keyword) throws Exception{
@@ -185,11 +175,6 @@ public class AdminController {
 
 		return modelAndView;
 	}
-
-//	@RequestMapping(value = "/statistics.do")
-//	public String statistics(){
-//		return "/admin/statistics";
-//	}
 
 	@RequestMapping(value = "/statistics.do")
 	public ModelAndView statistics(@RequestParam(value="p",required=false) String p,

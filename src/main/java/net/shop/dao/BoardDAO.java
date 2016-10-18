@@ -6,15 +6,6 @@ import net.shop.vo.BoardVO;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * First Editor : Donghyun Seo (egaoneko@naver.com)
- * Last Editor  :
- * Date         : 2015-03-20
- * Description  :
- * Copyright ⓒ 2013-2015 Donghyun Seo All rights reserved.
- * version      :
- */
-
 public interface BoardDAO {
 
     public int selectCount() throws Exception;

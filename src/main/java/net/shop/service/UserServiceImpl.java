@@ -205,11 +205,6 @@ public class UserServiceImpl implements UserService {
 		return cartDAO.selectList(email);
 	}
 
-	/*
-	First Editor : Donghyun Seo (egaoneko@naver.com)
-	Last Editor  :
-	Date         : 2015-06-06
-	*/
 	@Override
 	public List<OrdersVO> ordersTotalList(int firstRow, int endRow, String keyword) throws Exception {
 
@@ -220,11 +215,6 @@ public class UserServiceImpl implements UserService {
 		return ordersDAO.selectTotalListMap(map);
 	}
 
-	/*
-	First Editor : Donghyun Seo (egaoneko@naver.com)
-	Last Editor  :
-	Date         : 2015-06-06
-	*/
 	@Override
 	public int orderCountTotalList(String keyword) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
