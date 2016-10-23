@@ -12,4 +12,4 @@
 	* Git
 
 ## Youtube Tutorial
- [Youtube](https://youtu.be/rmtQwha8PNg)
+ [Video](https://youtu.be/rmtQwha8PNg)
