@@ -1,5 +1,3 @@
-! [Screenshot] (http://ifile.icecoffee.cn/3eG5Q.jpeg)
-
 ## Online Book Shop COMP 9321 ass2
 
 * Back-end
@@ -16,6 +14,3 @@
 ## Youtube Tutorial
  [Video](https://youtu.be/rmtQwha8PNg)
 
-## Demo
-
-! [Screenshot] (http://egaoneko.github.io/assets/media/lab-shop.png)
