@@ -14,5 +14,5 @@
 ## Youtube Tutorial
  [Video](https://youtu.be/rmtQwha8PNg)
 
-## Demo
 ! [Screenshot] (http://ifile.icecoffee.cn/3eG5Q.jpeg)
+! [Screenshot] (http://egaoneko.github.io/assets/media/lab-shop.png)
